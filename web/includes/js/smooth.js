@@ -3,7 +3,6 @@ $(document).ready(function() {
         .not('[href="#"]')
         .not('[href="#0"]')
         .click(function(event) {
-            console.log('tototo');
             if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
                 && location.hostname == this.hostname) {
                 var target = $(this.hash);
