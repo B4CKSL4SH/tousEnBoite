@@ -1,0 +1,4 @@
+services:
+#    juritravail_home.example:
+#        class: Juritravail\HomeBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

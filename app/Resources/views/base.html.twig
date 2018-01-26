@@ -1,13 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
+        <title>{% block metatitle %}{% endblock %}</title>
+        <meta name="description" content="{% block metadesc %}{% endblock %}" />
+
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        {#{% block stylesheets %}#}
+            {#{% stylesheets filter="scssphp" output="css/app.css"#}
+            {#"assets/scss/toto.scss"#}
+            {#%}#}
+            {#<link rel="stylesheet" href="{{ asset_url }}" />#}
+            {#{% endstylesheets %}#}
+        {#{% endblock %}#}
+        {#<link rel="stylesheet" href="{{ asset('assets/css/materialdesignicons.min.css') }}" />#}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <header>
+            {% block header %}
+                {% include 'header.html.twig' %}
+            {% endblock %}
+        </header>
+
+        {% block content %}PRESTIGE{% endblock %}
+
+        <footer>
+            {% block footer %}
+                {% include 'footer.html.twig' %}
+            {% endblock %}
+        </footer>
+
+
+        {#{% block javascripts %}#}
+            {#{% javascripts#}
+                {#'toto.js'#}
+            {#%}#}
+            {#<script src="{{ asset_url }}"></script>#}
+            {#{% endjavascripts %}#}
+        {#{% endblock %}#}
     </body>
 </html>
