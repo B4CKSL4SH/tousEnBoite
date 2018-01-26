@@ -29,4 +29,14 @@ class DefaultController extends Controller
             ['myvideo' => 'montest.avi']
         );
     }
+    /**
+     * @Route("/video2", name="video2", schemes={"https"})
+     */
+    public function video2Action(Request $request)
+    {
+        // replace this example code with whatever you need
+        return $this->render('AppBundle:example:video2.html.twig',
+            ['myvideo' => 'montest.avi']
+        );
+    }
 }

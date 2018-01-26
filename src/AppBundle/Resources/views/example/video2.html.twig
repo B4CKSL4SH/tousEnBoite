@@ -1,0 +1,133 @@
+<style>
+    body {
+        background: black;
+        color:#CCCCCC;
+    }
+    #c2 {
+        background-image: url('includes/img/5eme.jpg') ;
+        background-repeat: no-repeat;
+
+    }
+    div {
+        float: left;
+        border: 1px solid #444444;
+        padding: 10px;
+        margin: 10px;
+        background: #3B3B3B;
+    }
+
+    .test {
+        color: #2F312F; /* 49 47 47*/
+        color: #626563; /* 101 98 99 */
+        color: #637376; /* 115 99 118 */
+
+        color: #009f07; /* 159 0 7*/
+
+        color : #84BFA5; /* 191 132 165 */
+        color : #74A898; /* 168 116 152 */
+    }
+</style>
+
+<div id="video-test">
+    <div>
+        <video id="video"></video>
+    </div>
+    <div>
+        <canvas id="c1" width="300" height="169"></canvas>
+        <canvas id="c2" width="300" height="169"></canvas>
+    </div>
+</div>
+
+<button id="startbutton">Start</button>
+
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    var processor = {};
+
+    processor.doLoad = function doLoad() {
+        this.video = document.getElementById('video');
+        this.c1 = document.getElementById('c1');
+        this.ctx1 = this.c1.getContext('2d');
+        this.c2 = document.getElementById('c2');
+        this.ctx2 = this.c2.getContext('2d');
+        var self = this;
+        $('#startbutton').click(function() {
+
+            self.width = self.video.videoWidth / 2;
+            self.height = self.video.videoHeight / 2;
+            self.timerCallback();
+        });
+    };
+
+    processor.timerCallback = function timerCallback() {
+        this.computeFrame();
+        var self = this;
+        setTimeout(function() {
+            self.timerCallback();
+        }, 0);
+    };
+
+
+
+    processor.computeFrame = function computeFrame() {
+        this.ctx1.drawImage(this.video, 0, 0, this.width, this.height);
+        var frame = this.ctx1.getImageData(0, 0, this.width, this.height);
+        var l = frame.data.length / 4;
+
+        for (var i = 0; i < l; i++) {
+            var r = frame.data[i * 4 + 0];
+            var g = frame.data[i * 4 + 1];
+            var b = frame.data[i * 4 + 2];
+            var isOpenspaceColor = (g >= 48 && g <= 95 && r >= 50 && r <= 95 && b >= 50 && b <= 95) ||
+                (g >= 80 && g <= 140 && r >= 70 && r <= 130 && b >= 90 && b <= 140);
+            var isGreenColor = (g >= 150 && g <= 165 && r >= 0 && r <= 10 && b >= 0 && b <= 15);
+
+             /* 191 132 165 */
+            /* 168 116 152 */
+
+            var isGreenColorWebcam = (g >= 160 && g <= 210 && r >= 110 && r <= 150 && b >= 144 && b <= 185)||
+                (g >= 150 && g <= 190 && r >= 95 && r <= 145 && b >= 130 && b <= 175);
+
+            if (isOpenspaceColor) {
+                frame.data[i * 4 + 3] = 0;
+            }
+        }
+        this.ctx2.putImageData(frame, 0, 0);
+        return;
+    };
+
+    (function() {
+
+        var  video        = document.querySelector('#video');
+
+        navigator.getMedia = ( navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
+
+        navigator.getMedia(
+            {
+                video: true,
+                audio: false
+            },
+            function(stream) {
+                if (navigator.mozGetUserMedia) {
+                    video.mozSrcObject = stream;
+                } else {
+                    var vendorURL = window.URL || window.webkitURL;
+                    video.src = vendorURL.createObjectURL(stream);
+                }
+                video.play();
+            },
+            function(err) {
+                console.log("An error occured! " + err);
+            }
+        );
+
+        processor.doLoad();
+    })();
+
+</script>
