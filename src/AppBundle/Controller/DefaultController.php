@@ -25,6 +25,8 @@ class DefaultController extends Controller
     public function videoAction(Request $request)
     {
         // replace this example code with whatever you need
-        return $this->render('AppBundle:toto:video.html.twig');
+        return $this->render('AppBundle:toto:video.html.twig',
+            ['myvideo' => 'montest.avi']
+        );
     }
 }
